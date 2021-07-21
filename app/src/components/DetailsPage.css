@@ -1,0 +1,29 @@
+.price-container {
+    width: 30vw;
+    height: 10vw;
+    background-color: white;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    margin-top: 26px;
+}
+
+.buy-button {
+    width: 6.5vw;
+    height: 5vh;
+    background-color: #094EFF;
+    color: white;
+    font-size: 2.4vh;
+    font-weight: 500;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.description-container {
+    width: 40vw;
+    height: 50vh;
+    overflow: scroll;
+    background-color: white;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    margin-top: 26px;
+}
