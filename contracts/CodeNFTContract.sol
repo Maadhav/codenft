@@ -1,13 +1,26 @@
 pragma solidity >=0.4.21 <0.7.0;
 
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+
 contract CodeNFTContract {
-    event StorageSet(string _message);
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
 
-    uint256 public storedData;
+    constructor(string memory tokenName, string memory symbol) ERC721(tokenName, symbol) {
+        _setBaseURI("ipfs://");
+    }
 
-    function set(uint256 x) public {
-        storedData = x;
+    function mintToken(address owner, string memory metadataURI)
+    public
+    returns (uint256)
+    {
+        _tokenIds.increment();
 
-        emit StorageSet("Data stored successfully!");
+        uint256 id = _tokenIds.current();
+        _safeMint(owner, id);
+        _setTokenURI(id, metadataURI);
+
+        return id;
     }
 }
