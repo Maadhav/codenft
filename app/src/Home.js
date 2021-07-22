@@ -7,6 +7,7 @@ import { Client as Styletron } from "styletron-engine-atomic";
 import Marketplace from "./components/marketplace";
 import { Switch, Route } from "react-router-dom"
 import DetailsPage from "./components/DetailsPage";
+import MintNFT from "./components/MintNFT";
 
 const debug =
   process.env.NODE_ENV === "production" ? void 0 : new DebugEngine();
@@ -39,6 +40,9 @@ export default ({ drizzle, drizzleState }) => {
                 </Route>
                 <Route path="/mynfts/details/:id?">
                   <DetailsPage />
+                </Route>
+                <Route path="/mint">
+                  <MintNFT />
                 </Route>
               </Switch>
             </div>
