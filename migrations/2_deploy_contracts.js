@@ -1,5 +1,5 @@
-const CodeNFTContract = artifacts.require("CodeNFTContract");
+const CodeNFT = artifacts.require("CodeNFT");
 
-module.exports = function(deployer) {
-  deployer.deploy(CodeNFTContract);
+module.exports = function (deployer) {
+  deployer.deploy(CodeNFT);
 };
