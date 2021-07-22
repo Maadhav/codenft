@@ -7,7 +7,7 @@ module.exports = {
   networks: {
     compilers: {
       solc: {
-        version: "0.5.0",
+        version: "^0.8.0"
       },
       develop: {
         // default with truffle unbox is 7545, but we can use develop to test changes, ex. truffle migrate --network develop
