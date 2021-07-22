@@ -51,7 +51,7 @@ export const Navbar = () => {
             <div className="action-container">
             <span
           className="outline-button"
-          onClick={history.push("/mint")}
+          onClick={() => history.push("/mint")}
         >
           <FaCloudUploadAlt
             color={"#FFFFFF"}

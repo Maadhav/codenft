@@ -38,11 +38,11 @@ export default ({ drizzle, drizzleState }) => {
                 <Route path="/details/:id?">
                   <DetailsPage />
                 </Route>
-                <Route path="/mynfts/details/:id?">
-                  <DetailsPage />
-                </Route>
                 <Route path="/mint">
                   <MintNFT />
+                </Route>
+                <Route path="/mynfts/details/:id?">
+                  <DetailsPage />
                 </Route>
               </Switch>
             </div>
