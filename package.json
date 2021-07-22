@@ -21,10 +21,11 @@
   },
   "homepage": "https://github.com/truffle-box/drizzle-box#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "^2.4.0",
+    "@openzeppelin/contracts": "^4.2.0",
     "atomize": "^1.0.28",
     "react-icons": "^4.2.0",
     "react-transition-group": "^4.4.2",
-    "styletron-react": "^6.0.1"
+    "styletron-react": "^6.0.1",
+    "truffle": "^5.4.1"
   }
 }
