@@ -11,23 +11,17 @@ contract CodeNFT is Context, AccessControlEnumerable, ERC721Enumerable {
      using Counters for Counters.Counter;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     Counters.Counter private _tokenIdTracker;
 
     string private _baseTokenURI;
 
     constructor(
-        string memory name,
-        string memory symbol,
-        string memory baseTokenURI
-    ) ERC721(name, symbol) {
-        _baseTokenURI = baseTokenURI;
+    ) ERC721("Code", "CODE") {
+        _baseTokenURI = "ipfs://";
 
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
-
         _setupRole(MINTER_ROLE, _msgSender());
-        _setupRole(PAUSER_ROLE, _msgSender());
     }
 
     function mintToken(address client, string memory repoURI)
