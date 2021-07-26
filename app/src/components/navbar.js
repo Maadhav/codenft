@@ -10,8 +10,7 @@ export const Navbar = () => {
     const history = useHistory()
     const location = useLocation()
 
-    const [index, setIndex] = useState(0)
-
+    const [index, setIndex] = useState(location.pathname.includes('/mynfts') ? 1: 0)
 
     function changeIndex(value) {
         setIndex(() => value);

@@ -5,10 +5,10 @@ const MintNFT = () => {
     return (
         <div style={{ padding: "89px 91px" }}>
             <Row>
-                <Col xs="6" style={{margin: "0px 20px 0px 0px"}}>
+                <Col size="9" >
                     <UploadFile type="code" />
                 </Col>
-                <Col xs="6" style={{margin: "0px 0px 0px 20px"}}>
+                <Col size="3" >
                     <UploadFile type="image" />
                 </Col>
             </Row>
@@ -30,7 +30,7 @@ const MintNFT = () => {
                 </Col> */}
             </Row>
             <Row style={{ marginTop: "20px" }}>
-                <Button style={{width: "100%", height: "6vh",fontFamily: "Lato", fontSize: "24px"}}>Upload</Button>
+                <Button style={{width: "100%", height: "7vh",borderRadius: "12px",fontFamily: "Lato", fontSize: "24px",background: "#094eff"}}>Upload</Button>
             </Row>
         </div>
     )
