@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input, Textarea, Button, Icon } from 'atomize'
 import { } from 'react-icons'
 import UploadFile from "./UploadFile"
@@ -7,11 +7,22 @@ import NFTTile from './NFTTile'
 
 const MintNFT = () => {
 
-    const [active, setActive] = useState(4)
+    const [active, setActive] = useState(0)
 
+    const [time, setTime] = useState(true)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setTime(false)
+        }, 500);
+    }, [])
 
     function onProgressChange(index) {
-        setActive(index)
+        setTime(true)
+        setTimeout(() => {
+            setTime(false)
+            setActive(index)
+        }, 500);
     }
 
     return (
@@ -24,12 +35,13 @@ const MintNFT = () => {
                 <button className={`process-button ${active === 4 ? "active" : active < 4 ? "inprogress" : "completed"}`} onClick={() => onProgressChange(4)}>5.Final</button>
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
-                <div style={active === 4 ? {}:{ height: "68vh", width: "68vh" }}>
+                <div style={active === 4 ? {opacity: time ? 0 : 1}:{ height: "68vh", width: "68vh",opacity: time ? 0 : 1 }} className={`fade`}>
                     {
                         active === 0 ?
-                            <UploadFile type="code" onFileDrop={(e) => { console.log(e) }} /> :
+                        
+                            <UploadFile type="code" onFileDrop={(e) => { console.log(e) }}/>  :
                             active === 1 ?
-                                <UploadFile type="image" onFileDrop={(e) => { console.log(e) }} /> : active === 2 ? <div className="process-section">
+                               <UploadFile type="image" onFileDrop={(e) => { console.log(e) }} /> : active === 2 ? <div className="process-section">
                                     <div style={{ margin: "5vh" }}>
                                         <Input style={{ height: "6vh",  }} type="text" placeHolder="Title" />
                                         <Textarea style={{ height: "48vh",  fontFamily: "Lato", marginTop: "4vh" }} type="text" placeHolder="Description" />

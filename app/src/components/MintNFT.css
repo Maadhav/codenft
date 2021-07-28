@@ -20,7 +20,7 @@
 }
 
 .process-button.active {
-  background-color: #094EFF;
+  background-color: #094eff;
   color: white;
 }
 
@@ -30,7 +30,7 @@
   text-decoration: line-through;
 }
 
-.process-button.inprogress{
+.process-button.inprogress {
   background-color: transparent;
   color: black;
 }
@@ -41,8 +41,11 @@
   background-color: white;
   border: 1px dashed;
   border-radius: 12px;
+  transition: 1s;
 }
 
 
-
+.fade {
+  transition: opacity 0.5s;
+}
 
