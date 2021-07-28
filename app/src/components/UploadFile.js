@@ -7,22 +7,18 @@ export default function ({ type, onFileDrop }) {
 
     const dragOver = (e) => {
         e.preventDefault();
-        console.log("over");
       };
     
       const dragEnter = (e) => {
-        console.log("enter");
         e.preventDefault();
       };
     
       const onDrop = (e) => {
         e.preventDefault();
-        console.log("stasrt");
         onFileDrop(e.dataTransfer.files[0]);
       };
     
       const dragLeave = (e) => {
-        console.log("exit");
         e.preventDefault();
       };
     return (

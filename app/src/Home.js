@@ -17,7 +17,6 @@ const engine = new Styletron();
 
 export default ({ drizzle, drizzleState }) => {
 
-
   // destructure drizzle and drizzleState from props
   return (
     <StyletronProvider value={engine} debug={debug} debugAfterHydration>
@@ -39,7 +38,7 @@ export default ({ drizzle, drizzleState }) => {
                   <DetailsPage />
                 </Route>
                 <Route path="/mint">
-                  <MintNFT />
+                  <MintNFT drizzle = {drizzle} drizzleState = {drizzleState}/>
                 </Route>
                 <Route path="/mynfts/details/:id?">
                   <DetailsPage />

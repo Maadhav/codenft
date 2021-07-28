@@ -8,6 +8,7 @@
     "@drizzle/store": "^1.5.1",
     "@types/styletron-standard": "^2.0.2",
     "atomize": "^1.0.28",
+    "nft.storage": "^3.0.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-icons": "^4.2.0",
