@@ -1,10 +1,10 @@
 .container {
-    height: 30vh;
-    width: 100%;
+    width: 68vh;
+    height: 68vh;
+    background-color: white;
     border-radius: 12px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 0px;
     border: 1px dashed ;
 }
