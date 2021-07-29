@@ -1,93 +1,160 @@
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract CodeNFT is Context, AccessControlEnumerable, ERC721Enumerable {
-    using Strings for uint256;
-    mapping(uint256 => string) private _tokenURIs;
+contract CodeNFT is ERC721URIStorage {
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
+    address contractAddress;
 
-     using Counters for Counters.Counter;
-
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-
-    Counters.Counter private _tokenIdTracker;
-
-    string private _baseTokenURI;
-
-    constructor(
-    ) ERC721("Code", "CODE") {
-        _baseTokenURI = "ipfs://";
-
-        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _setupRole(MINTER_ROLE, _msgSender());
+    constructor() ERC721("Code NFT", "CODE") {
     }
 
-    function mintToken(address client, string memory repoURI)
-        public
-        returns (uint256)
-    {
-        require(hasRole(MINTER_ROLE, _msgSender()), "ERC721PresetMinterPauserAutoId: must have minter role to mint");
-        _tokenIdTracker.increment();
+    function createToken(address marketplaceAddress, string memory tokenURI) public returns (uint) {
+        contractAddress = marketplaceAddress;
+        _tokenIds.increment();
+        uint256 newItemId = _tokenIds.current();
 
-        uint256 id = _tokenIdTracker.current();
-        _safeMint(client, id);
-        _setTokenURI(id, repoURI);
+        _mint(msg.sender, newItemId);
+        _setTokenURI(newItemId, tokenURI);
+        approve(contractAddress, newItemId);
+        return newItemId;
+    }
+}
 
-        return id;
+contract CodeNFTMarket is ReentrancyGuard {
+  using Counters for Counters.Counter;
+  Counters.Counter private _itemIds;
+  Counters.Counter private _itemsSold;
+
+  address payable owner;
+  uint256 listingPrice = 0.1 ether;
+
+  constructor() {
+    owner = payable(msg.sender);
+  }
+
+  struct MarketItem {
+    uint itemId;
+    address nftContract;
+    uint256 tokenId;
+    address payable seller;
+    address payable owner;
+    uint256 price;
+  }
+
+  mapping(uint256 => MarketItem) private idToMarketItem;
+
+  event MarketItemCreated (
+    uint indexed itemId,
+    address indexed nftContract,
+    uint256 indexed tokenId,
+    address seller,
+    address owner,
+    uint256 price
+  );
+
+  function getMarketItem(uint256 marketItemId) public view returns (MarketItem memory) {
+    return idToMarketItem[marketItemId];
+  }
+
+  event Message (
+      address from,
+     uint256 tokenId  
+  );
+
+
+  function createMarketItem(
+    address nftContract,
+    uint256 tokenId,
+    uint256 price
+  ) public payable nonReentrant {
+    require(price > 0, "Price must be at least 1 wei");
+    require(msg.value == listingPrice, "Price must be equal to listing price");
+
+    emit Message(msg.sender, tokenId);
+    _itemIds.increment();
+    uint256 itemId = _itemIds.current();
+  
+    IERC721(nftContract).transferFrom(msg.sender, address(this), 1);
+
+    idToMarketItem[itemId] =  MarketItem(
+      itemId,
+      nftContract,
+      tokenId,
+      payable(msg.sender),
+      payable(address(0)),
+      price
+    );
+
+
+    emit MarketItemCreated(
+      itemId,
+      nftContract,
+      tokenId,
+      msg.sender,
+      address(0),
+      price
+    );
+  }
+
+  function createMarketSale(
+    address nftContract,
+    uint256 itemId
+    ) public payable nonReentrant {
+    uint price = idToMarketItem[itemId].price;
+    uint tokenId = idToMarketItem[itemId].tokenId;
+    require(msg.value == price, "Please submit the asking price in order to complete the purchase");
+
+    idToMarketItem[itemId].seller.transfer(msg.value);
+    IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
+    idToMarketItem[itemId].owner = payable(msg.sender);
+    _itemsSold.increment();
+    payable(owner).transfer(listingPrice);
+  }
+
+  function fetchMarketItems() public view returns (MarketItem[] memory) {
+    uint itemCount = _itemIds.current();
+    uint unsoldItemCount = _itemIds.current() - _itemsSold.current();
+    uint currentIndex = 0;
+
+    MarketItem[] memory items = new MarketItem[](unsoldItemCount);
+    for (uint i = 0; i < itemCount; i++) {
+      if (idToMarketItem[i + 1].owner == address(0)) {
+        uint currentId = i + 1;
+        MarketItem storage currentItem = idToMarketItem[currentId];
+        items[currentIndex] = currentItem;
+        currentIndex += 1;
+      }
+    }
+   
+    return items;
+  }
+
+  function fetchMyNFTs() public view returns (MarketItem[] memory) {
+    uint totalItemCount = _itemIds.current();
+    uint itemCount = 0;
+    uint currentIndex = 0;
+
+    for (uint i = 0; i < totalItemCount; i++) {
+      if (idToMarketItem[i + 1].owner == msg.sender) {
+        itemCount += 1;
+      }
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
-    {
-        require(
-            _exists(tokenId),
-            "ERC721URIStorage: URI query for nonexistent token"
-        );
-
-        string memory _tokenURI = _tokenURIs[tokenId];
-        string memory base = _baseURI();
-
-        if (bytes(base).length == 0) {
-            return _tokenURI;
-        }
-        if (bytes(_tokenURI).length > 0) {
-            return string(abi.encodePacked(base, _tokenURI));
-        }
-
-        return super.tokenURI(tokenId);
+    MarketItem[] memory items = new MarketItem[](itemCount);
+    for (uint i = 0; i < totalItemCount; i++) {
+      if (idToMarketItem[i + 1].owner == msg.sender) {
+        uint currentId = i + 1;
+        MarketItem storage currentItem = idToMarketItem[currentId];
+        items[currentIndex] = currentItem;
+        currentIndex += 1;
+      }
     }
-
-    function _setTokenURI(uint256 tokenId, string memory _tokenURI)
-        internal
-        virtual
-    {
-        require(
-            _exists(tokenId),
-            "ERC721URIStorage: URI set of nonexistent token"
-        );
-        _tokenURIs[tokenId] = _tokenURI;
-    }
-
-    function _burn(uint256 tokenId) internal virtual override {
-        super._burn(tokenId);
-
-        if (bytes(_tokenURIs[tokenId]).length != 0) {
-            delete _tokenURIs[tokenId];
-        }
-    }
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override(AccessControlEnumerable, ERC721Enumerable)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
-    }
+   
+    return items;
+  }
 }
