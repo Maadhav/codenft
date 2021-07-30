@@ -3,24 +3,25 @@ import "./UploadFile.css"
 import PropTypes from 'prop-types'
 import { BsFileEarmarkZip, BsFillImageFill } from 'react-icons/bs'
 
-export default function ({ type, onFileDrop }) {
+export default function ({ type, onFileDrop, onCompleted }) {
 
     const dragOver = (e) => {
         e.preventDefault();
-      };
-    
-      const dragEnter = (e) => {
+    };
+
+    const dragEnter = (e) => {
         e.preventDefault();
-      };
-    
-      const onDrop = (e) => {
+    };
+
+    const onDrop = (e) => {
         e.preventDefault();
         onFileDrop(e.dataTransfer.files[0]);
-      };
-    
-      const dragLeave = (e) => {
+        onCompleted()
+    };
+
+    const dragLeave = (e) => {
         e.preventDefault();
-      };
+    };
     return (
         <div className="container" onDragEnter={dragEnter} onDragLeave={dragLeave} onDragOver={dragOver} onDrop={onDrop}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
@@ -29,7 +30,7 @@ export default function ({ type, onFileDrop }) {
                         <BsFileEarmarkZip size={70} />
                         : <BsFillImageFill size={70} />
                 }
-                <div style={{margin: "2vh 0px"}}>
+                <div style={{ margin: "2vh 0px" }}>
                     <p style={{ fontSize: "3.6vh", textAlign: "center" }}>
                         Drag and Drop
                     </p>
@@ -37,9 +38,9 @@ export default function ({ type, onFileDrop }) {
                     <p style={{ fontSize: "2.4vh", fontWeight: "bold", textAlign: "center" }}>or</p>
                 </div>
                 <FilePicker
-                    onChange={onFileDrop}
+                    onChange={(file) => { onFileDrop(file); onCompleted() }}
                     onError={(e) => console.log(e)}
-                    accept={type =="code" ? "" :"image/*"}
+                    accept={type == "code" ? "" : "image/*"}
                 >
                     <button className="buy-button">Pick</button>
                 </FilePicker>

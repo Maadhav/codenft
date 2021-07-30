@@ -38,7 +38,7 @@ export const Navbar = () => {
                             transform="translateY(-50%)"
                         />} /></div>
             <div className="menu-container">
-                <div className="menu-item" onClick={() => {changeIndex(0); history.replace()}}>
+                <div className="menu-item" onClick={() => {changeIndex(0); history.replace("/")}}>
                     <div className="menu-item-text">Marketplace</div>
                     <div className={index === 0 ? "menu-item-active" : ""}></div>
                 </div>

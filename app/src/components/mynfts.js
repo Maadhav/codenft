@@ -4,7 +4,7 @@ import "./marketplace.css"
 import axios from "axios"
 import NFTTile from './NFTTile'
 import { imageCidandImage } from '../utils/utils'
-const Marketplace = ({ drizzle, drizzleState }) => {
+const MyNFTs = ({ drizzle, drizzleState }) => {
     const history = useHistory();
     const location = useLocation()
     const [items, setItems] = useState([])
@@ -21,9 +21,8 @@ const Marketplace = ({ drizzle, drizzleState }) => {
         const market = drizzle.contracts.CodeNFTMarket
         const code = drizzle.contracts.CodeNFT
         var data = [];
-
-        data = await market.methods.fetchMarketItems().call({ from: drizzleState.accounts[0] })
-
+        data = await market.methods.fetchMyNFTs().call()
+        console.log(data)
         var parsedData = []
         for (let index = 0; index < data.length; index++) {
             const e = data[index];
@@ -56,4 +55,4 @@ const Marketplace = ({ drizzle, drizzleState }) => {
     )
 }
 
-export default Marketplace
+export default MyNFTs
