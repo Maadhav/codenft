@@ -23,6 +23,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.2.0",
     "atomize": "^1.0.28",
+    "big-number": "^2.0.0",
     "react-icons": "^4.2.0",
     "react-transition-group": "^4.4.2",
     "styletron-react": "^6.0.1",

@@ -39,7 +39,7 @@ export default function ({ type, onFileDrop }) {
                 <FilePicker
                     onChange={onFileDrop}
                     onError={(e) => console.log(e)}
-                    accept={type === "code" ? ".zip" : "image/*"}
+                    accept={type =="code" ? "" :"image/*"}
                 >
                     <button className="buy-button">Pick</button>
                 </FilePicker>
@@ -116,6 +116,7 @@ class FileInput extends React.Component {
                     multiple={true}
                     style={{ display: 'none' }}
                     onChange={this._handleUpload}
+                    accept={this.props.accept}
                     ref={ele => (this.fileInput = ele)}
                 />
                 {React.cloneElement(this.props.children, {

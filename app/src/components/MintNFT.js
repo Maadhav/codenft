@@ -5,6 +5,7 @@ import UploadFile from "./UploadFile";
 import "./MintNFT.css";
 import NFTTile from "./NFTTile";
 import { NFTStorage, File } from "nft.storage";
+import BigNumber from "big-number"
 
 const apiKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQ3MDk4OWIzN2JlMjExN2QwYWE2MGRCNmYyMzIzODQ5NTQzMjNiRDYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyNjA4NzY0NTU5NSwibmFtZSI6InRlc3QifQ.CSD7bSQgXEzLIP8eTKxqJLYYmVEHulNdIoMHgGUCn5c";
@@ -17,6 +18,7 @@ const MintNFT = ({ drizzle, drizzleState }) => {
   const [time, setTime] = useState(true);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
   const [file, setFile] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
 
@@ -26,20 +28,22 @@ const MintNFT = ({ drizzle, drizzleState }) => {
     }, 500);
   }, []);
 
+
   const onSell = async () => {
-    // const metadata = await client.store({
-    //   name: title,
-    //   description: description,
-    //   image: new File([thumbnail], "test2.jpg", { type: "image/jpg" }),
-    //   properties: {
-    //     code: new File([file], "code.zip", { type: "application/zip" }),
-    //   },
-    // });
-    // console.log(metadata.url);
-    const contract = drizzle.contracts.CodeNFT;
-    console.log(
-      contract.methods["mintToken"].cacheSend(drizzleState.accounts[0], "test.com",{from: drizzleState.accounts[0], gas:3000000})
-    );
+    console.log("called",price)
+    const metadata = await client.store({
+      name: title,
+      description: description,
+      image: new File([thumbnail], thumbnail.name, { type: "image/jpg" }),
+      properties: {
+        code: new File([file], file.name, { type: "application/zip" }),
+      },
+    });
+    console.log(metadata.url);
+    const mintCrt = drizzle.contracts.CodeNFT;
+    const market = drizzle.contracts.CodeNFTMarket;
+    var tokenId = await mintCrt.methods["createToken"].cacheSend(market.address, metadata.url,{from: drizzleState.accounts[0], gas:3000000})
+    console.log(await market.methods["createMarketItem"].cacheSend(mintCrt.address, tokenId, drizzle.web3.utils.toWei(`${price}`, "ether"),{value: drizzle.web3.utils.toWei("0.1", "ether")}))
   };
   function onProgressChange(index) {
     setTime(true);
@@ -158,7 +162,7 @@ const MintNFT = ({ drizzle, drizzleState }) => {
             <div className="process-section">
               <div style={{ margin: "5vh" }}>
                 <img
-                  src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
+                  src={thumbnail ? URL.createObjectURL(thumbnail) :"https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"}
                   style={{ height: "48vh", width: "100%", marginBottom: "4vh" }}
                   className="nft-image-container"
                 />
@@ -171,6 +175,8 @@ const MintNFT = ({ drizzle, drizzleState }) => {
                     borderColor: "#c9ced6",
                   }}
                   type="number"
+                  value={price}
+                  onChange={(e) => setPrice(e.currentTarget.value)}
                   required
                   placeHolder="100.00"
                   step=".00"
@@ -208,16 +214,7 @@ const MintNFT = ({ drizzle, drizzleState }) => {
               >
                 <NFTTile onClick={(e) => console.log(e)} />
                 <p style={{ padding: "10px 0px" }}>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged. It was popularised in the 1960s with
-                  the release of Letraset sheets containing Lorem Ipsum
-                  passages, and more recently with desktop publishing software
-                  like Aldus PageMaker including versions of Lorem Ipsum.
+                  {description}
                 </p>
                 <button className="buy-button" onClick={onSell}>
                   Sell

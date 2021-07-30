@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Row, } from 'atomize';
 import { Navbar } from "./components/navbar";
 import { StyleReset } from "atomize";
@@ -16,7 +16,15 @@ const debug =
 const engine = new Styletron();
 
 export default ({ drizzle, drizzleState }) => {
-
+  
+  async function getData(){
+    const accounts = await drizzle.web3.eth.getAccounts()
+    console.log(await drizzle.contracts.CodeNFTMarket.methods["createMarketItem"].cacheSend("0xf2D5BDc9C64ecd12CdA75957140D2d525dC7eBAA", 2, drizzle.web3.utils.toWei(`1`, "ether"),{value: drizzle.web3.utils.toWei("0.1", "ether")}))
+    // console.log(await drizzle.contracts.CodeNFTMarket.methods['getMarketItem'].cacheCall(0))
+  } 
+  useEffect(() => {
+    getData()
+  }, [])
   // destructure drizzle and drizzleState from props
   return (
     <StyletronProvider value={engine} debug={debug} debugAfterHydration>
