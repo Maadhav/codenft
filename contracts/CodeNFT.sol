@@ -23,6 +23,10 @@ contract CodeNFT is ERC721URIStorage {
         approve(contractAddress, newItemId);
         return newItemId;
     }
+    
+    function getLatestTokenId() public view returns (uint256) {
+        return _tokenIds.current();
+    }
 }
 
 contract CodeNFTMarket is ReentrancyGuard {
@@ -81,7 +85,7 @@ contract CodeNFTMarket is ReentrancyGuard {
     _itemIds.increment();
     uint256 itemId = _itemIds.current();
   
-    IERC721(nftContract).transferFrom(msg.sender, address(this), 1);
+    IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
 
     idToMarketItem[itemId] =  MarketItem(
       itemId,

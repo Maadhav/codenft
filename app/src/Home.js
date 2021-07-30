@@ -19,7 +19,20 @@ export default ({ drizzle, drizzleState }) => {
   
   async function getData(){
     const accounts = await drizzle.web3.eth.getAccounts()
-    console.log(await drizzle.contracts.CodeNFTMarket.methods["createMarketItem"].cacheSend("0xf2D5BDc9C64ecd12CdA75957140D2d525dC7eBAA", 2, drizzle.web3.utils.toWei(`1`, "ether"),{value: drizzle.web3.utils.toWei("0.1", "ether")}))
+    const market = await drizzle.contracts.CodeNFTMarket;
+    const code = await drizzle.contracts.CodeNFT
+    // .methods["createToken"].cacheSend(market.address, "test6", {
+    //   gas: 300000,
+    // });
+    // const listing = await market.methods["createMarketItem"].cacheSend(drizzle.contracts.CodeNFT.address, drizzle.web3.utils.toHex("1"), 1000000, {
+    //   from: "0x80A97706c8859bAe70004aF44CdAb5D826A37dF0",
+    //   value: drizzle.web3.utils.toWei("0.1", "ether")
+    // })
+    console.log  ("test ",market.address, code.address)
+
+
+
+    // console.log(await drizzle.contracts.CodeNFTMarket.methods["createMarketItem"].cacheSend("0xf2D5BDc9C64ecd12CdA75957140D2d525dC7eBAA", 2, drizzle.web3.utils.toWei(`1`, "ether"),{value: drizzle.web3.utils.toWei("0.1", "ether")}))
     // console.log(await drizzle.contracts.CodeNFTMarket.methods['getMarketItem'].cacheCall(0))
   } 
   useEffect(() => {

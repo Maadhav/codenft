@@ -5,7 +5,8 @@ import UploadFile from "./UploadFile";
 import "./MintNFT.css";
 import NFTTile from "./NFTTile";
 import { NFTStorage, File } from "nft.storage";
-import BigNumber from "big-number"
+import { newContextComponents } from "@drizzle/react-components";
+const { AccountData, ContractData, ContractForm } = newContextComponents;
 
 const apiKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQ3MDk4OWIzN2JlMjExN2QwYWE2MGRCNmYyMzIzODQ5NTQzMjNiRDYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYyNjA4NzY0NTU5NSwibmFtZSI6InRlc3QifQ.CSD7bSQgXEzLIP8eTKxqJLYYmVEHulNdIoMHgGUCn5c";
@@ -30,7 +31,7 @@ const MintNFT = ({ drizzle, drizzleState }) => {
 
 
   const onSell = async () => {
-    console.log("called",price)
+    // console.log("called",price)
     const metadata = await client.store({
       name: title,
       description: description,
@@ -39,11 +40,13 @@ const MintNFT = ({ drizzle, drizzleState }) => {
         code: new File([file], file.name, { type: "application/zip" }),
       },
     });
-    console.log(metadata.url);
-    const mintCrt = drizzle.contracts.CodeNFT;
+
+    const code = drizzle.contracts.CodeNFT;
     const market = drizzle.contracts.CodeNFTMarket;
-    var tokenId = await mintCrt.methods["createToken"].cacheSend(market.address, metadata.url,{from: drizzleState.accounts[0], gas:3000000})
-    console.log(await market.methods["createMarketItem"].cacheSend(mintCrt.address, tokenId, drizzle.web3.utils.toWei(`${price}`, "ether"),{value: drizzle.web3.utils.toWei("0.1", "ether")}))
+    await code.methods["createToken"].cacheSend(market.address, metadata.url,{gas:3000000})
+    const tokenId = await drizzle.contracts.CodeNFT.methods.getLatestTokenId().call()
+    console.log(tokenId);
+    await market.methods["createMarketItem"].cacheSend(drizzle.web3.utils.toHex(code.address), tokenId, drizzle.web3.utils.toWei(`${price}`, "ether"),{value: drizzle.web3.utils.toWei("0.1", "ether"), gas: 3000000})
   };
   function onProgressChange(index) {
     setTime(true);
