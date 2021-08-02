@@ -2,6 +2,6 @@
   display: grid;
   grid-gap: 50px;
   padding: 50px;
-  grid-template-columns: repeat(auto-fit, 18vw);
+  grid-template-columns: repeat(auto-fit, 345px);
 }
 

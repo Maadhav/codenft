@@ -7,6 +7,7 @@ import "./MintNFT.css";
 import NFTTile from "./NFTTile";
 import { NFTStorage, File } from "nft.storage";
 import { newContextComponents } from "@drizzle/react-components";
+import { useHistory } from "react-router-dom";
 const { AccountData, ContractData, ContractForm } = newContextComponents;
 
 const apiKey =
@@ -20,17 +21,23 @@ const MintNFT = ({ drizzle, drizzleState }) => {
   const [time, setTime] = useState(true);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const history = useHistory()
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [file, setFile] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
 
-  useEffect(async () => {
+  useEffect(() => {
+    onStart()
+  }, []);
+
+  const onStart = async () => {
     setTimeout(() => {
       setTime(false);
     }, 500);
-  }, []);
+  }
+
 
 
   const onSell = async () => {
@@ -66,6 +73,7 @@ const MintNFT = ({ drizzle, drizzleState }) => {
       }, 3000);
       setLoading(false)
     }, 5000);
+    history.replace("")
   };
   function onProgressChange(index) {
     setTime(true);
@@ -245,7 +253,7 @@ const MintNFT = ({ drizzle, drizzleState }) => {
                   }}
                 >
                   <NFTTile onClick={(e) => console.log(e)} imgSrc={URL.createObjectURL(thumbnail)} title={title} price={price} />
-                  <p style={{ padding: "10px 0px" }}>
+                  <p style={{ padding: "10px 0px",whiteSpace: "pre-line" }}>
                     {description}
                   </p>
                   <button className="buy-button" onClick={onSell}>

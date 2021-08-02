@@ -5,7 +5,7 @@ import { StyleReset } from "atomize";
 import { Provider as StyletronProvider, DebugEngine } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
 import Marketplace from "./components/marketplace";
-import { Switch, Route } from "react-router-dom"
+import { Switch, Route, useLocation } from "react-router-dom"
 import DetailsPage from "./components/DetailsPage";
 import MintNFT from "./components/MintNFT";
 import MyNFTs from "./components/mynfts";
@@ -17,6 +17,7 @@ const debug =
 const engine = new Styletron();
 
 export default ({ drizzle, drizzleState }) => {
+  const location = useLocation()
 
   async function getData() {
     const accounts = await drizzle.web3.eth.getAccounts()
@@ -44,7 +45,10 @@ export default ({ drizzle, drizzleState }) => {
     <StyletronProvider value={engine} debug={debug} debugAfterHydration>
       <StyleReset />
       <div className="App">
-        <Navbar />
+        {
+          location.pathname.includes("mint") ? <></>:
+          <Navbar />
+        }
         <Row>
           {/* <Col size="2" bg="warning700"></Col> */}
           <Col size="12">

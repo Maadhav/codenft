@@ -29022,12 +29022,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x4f77c4D2eE7F393fF7fF5635ac2cc5301D8f9B65",
-      "transactionHash": "0x71fca5c4dc553c29692dac9115e7cadc53500265d9493d03e9c99af91dcc2a68"
+      "address": "0xE64D34F9C0cDB9022285680950EF002902570B78",
+      "transactionHash": "0x7c48638bc44f07ad174023ccc5405e2250a2790b56b95988943d9c2afb8883e5"
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-30T08:49:06.529Z",
+  "updatedAt": "2021-08-01T13:42:02.282Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
