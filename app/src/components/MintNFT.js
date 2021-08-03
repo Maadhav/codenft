@@ -8,6 +8,9 @@ import NFTTile from "./NFTTile";
 import { NFTStorage, File } from "nft.storage";
 import { newContextComponents } from "@drizzle/react-components";
 import { useHistory } from "react-router-dom";
+import { Web3Context } from "../Web3Context";
+import Code from "../contracts/CodeNFT.json"
+import Market from "../contracts/CodeNFTMarket.json"
 const { AccountData, ContractData, ContractForm } = newContextComponents;
 
 const apiKey =
@@ -16,7 +19,8 @@ const client = new NFTStorage({
   token: apiKey,
 });
 
-const MintNFT = ({ drizzle, drizzleState }) => {
+
+const MintNFT = () => {
   const [active, setActive] = useState(0);
   const [time, setTime] = useState(true);
   const [title, setTitle] = useState("");
@@ -27,6 +31,7 @@ const MintNFT = ({ drizzle, drizzleState }) => {
   const [msg, setMsg] = useState("");
   const [file, setFile] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
+  const [web3] = useContext(Web3Context)
 
   useEffect(() => {
     onStart()
@@ -41,6 +46,9 @@ const MintNFT = ({ drizzle, drizzleState }) => {
 
 
   const onSell = async () => {
+    var code = new web3.eth.Contract(Code.abi, false ? '0xE64D34F9C0cDB9022285680950EF002902570B78' : "0xC5E47C64c30c82f2Fb768e0C73614b0813aDeD23")
+    var market = new web3.eth.Contract(Market.abi, false ? '0x0813ad9C2514A81bC9e1188BC1341c63a6Ab478f' : "0x3e3908ca1329001dc1b85f53C6FDbe20ae83deBC")
+    
     setLoading(true)
     setMsg("Create IPFS...")
     const metadata = await client.store({
@@ -55,19 +63,17 @@ const MintNFT = ({ drizzle, drizzleState }) => {
     setTimeout(() => {
       setMsg("Minting the NFT...")
     }, 3000);
-    const code = drizzle.contracts.CodeNFT;
-    const market = drizzle.contracts.CodeNFTMarket;
-    await code.methods["createToken"].cacheSend(market.address, metadata.url, { gas: 3000000 })
+    await code.methods.createToken(market.options.address, metadata.url).send({from :"0x056b05d110E45f89839DEE1F23a52AFc2f58fD52", gas: 3000000 })
     setTimeout(() => {
       setMsg("Minted the NFT...")
     }, 3000);
     setTimeout(async () => {
-      const tokenId = await drizzle.contracts.CodeNFT.methods.getLatestTokenId().call()
+      const tokenId = await code.methods.getLatestTokenId().call()
       console.log(tokenId);
       setTimeout(() => {
         setMsg("Create Market Item ...")
       }, 3000);
-      await market.methods["createMarketItem"].cacheSend(drizzle.web3.utils.toHex(code.address), tokenId, drizzle.web3.utils.toWei(`${price}`, "ether"), { value: drizzle.web3.utils.toWei("0.1", "ether"), gas: 3000000 })
+      await market.methods.createMarketItem(web3.utils.toHex(code.options.address), tokenId, web3.utils.toWei(`${price}`, "ether"),).send({from: "0x056b05d110E45f89839DEE1F23a52AFc2f58fD52", value: web3.utils.toWei("0.1", "ether"), gas: 3000000 })
       setTimeout(() => {
         setMsg("Created Market Item ...")
       }, 3000);
@@ -253,7 +259,7 @@ const MintNFT = ({ drizzle, drizzleState }) => {
                   }}
                 >
                   <NFTTile onClick={(e) => console.log(e)} imgSrc={URL.createObjectURL(thumbnail)} title={title} price={price} />
-                  <p style={{ padding: "10px 0px",whiteSpace: "pre-line" }}>
+                  <p style={{ padding: "10px 0px", whiteSpace: "pre-line" }}>
                     {description}
                   </p>
                   <button className="buy-button" onClick={onSell}>
