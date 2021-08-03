@@ -5,7 +5,7 @@ import { Input, Icon } from "atomize";
 import { FaCloudUploadAlt, FaRegUserCircle } from "react-icons/fa"
 import { IoWalletOutline } from "react-icons/io5"
 import { useHistory,useLocation } from 'react-router-dom';
-import Portis from '@portis/web3'
+// import Portis from '@portis/web3'
 import Web3 from "web3";
 import CodeNFT from "../contracts/CodeNFT.json";
 

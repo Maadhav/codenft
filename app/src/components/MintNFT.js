@@ -46,24 +46,25 @@ const MintNFT = () => {
 
 
   const onSell = async () => {
-    var code = new web3.eth.Contract(Code.abi, false ? '0xE64D34F9C0cDB9022285680950EF002902570B78' : "0xC5E47C64c30c82f2Fb768e0C73614b0813aDeD23")
-    var market = new web3.eth.Contract(Market.abi, false ? '0x0813ad9C2514A81bC9e1188BC1341c63a6Ab478f' : "0x3e3908ca1329001dc1b85f53C6FDbe20ae83deBC")
-    
+    var code = new web3.eth.Contract(Code.abi, false ? '0xE64D34F9C0cDB9022285680950EF002902570B78' : "0xC0c95eab51b85892e0cF563700BFbe54A1eA4Ae6")
+    var market = new web3.eth.Contract(Market.abi, false ? '0x0813ad9C2514A81bC9e1188BC1341c63a6Ab478f' : "0xb191783B5adD9C44aA6B583e5A68252d27244b34")
+    let accounts = await window.web3.eth.getAccounts()
+    console.log(accounts)
     setLoading(true)
     setMsg("Create IPFS...")
-    const metadata = await client.store({
-      name: title,
-      description: description,
-      image: new File([thumbnail], thumbnail.name, { type: "image/jpg" }),
-      properties: {
-        code: new File([file], file.name, { type: "application/zip" }),
-      },
-    });
+    // const metadata = await client.store({
+    //   name: title,
+    //   description: description,
+    //   image: new File([thumbnail], thumbnail.name, { type: "image/jpg" }),
+    //   properties: {
+    //     code: new File([file], file.name, { type: "application/zip" }),
+    //   },
+    // });
     setMsg("Created IPFS...")
     setTimeout(() => {
       setMsg("Minting the NFT...")
     }, 3000);
-    await code.methods.createToken(market.options.address, metadata.url).send({from :"0x056b05d110E45f89839DEE1F23a52AFc2f58fD52", gas: 3000000 })
+    await code.methods.createToken(market.options.address, "metadata.url").send({from :accounts[0], gas: 3000000 })
     setTimeout(() => {
       setMsg("Minted the NFT...")
     }, 3000);
@@ -73,7 +74,7 @@ const MintNFT = () => {
       setTimeout(() => {
         setMsg("Create Market Item ...")
       }, 3000);
-      await market.methods.createMarketItem(web3.utils.toHex(code.options.address), tokenId, web3.utils.toWei(`${price}`, "ether"),).send({from: "0x056b05d110E45f89839DEE1F23a52AFc2f58fD52", value: web3.utils.toWei("0.1", "ether"), gas: 3000000 })
+      await market.methods.createMarketItem(web3.utils.toHex(code.options.address), tokenId, web3.utils.toWei(`${price}`, "ether"),).send({from: "0x056b05d110E45f89839DEE1F23a52AFc2f58fD52", gas: 3000000 })
       setTimeout(() => {
         setMsg("Created Market Item ...")
       }, 3000);
