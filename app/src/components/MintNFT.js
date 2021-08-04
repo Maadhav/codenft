@@ -32,12 +32,15 @@ const MintNFT = () => {
   const [file, setFile] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [web3] = useContext(Web3Context)
+  const [crypto, setCrypto] = useState(0)
 
   useEffect(() => {
     onStart()
   }, []);
 
   const onStart = async () => {
+    var id = await web3.eth.getChainId()
+    setCrypto(val => id === 80001 ? 1 : 0)
     setTimeout(() => {
       setTime(false);
     }, 500);
@@ -46,25 +49,25 @@ const MintNFT = () => {
 
 
   const onSell = async () => {
-    var code = new web3.eth.Contract(Code.abi, false ? '0xE64D34F9C0cDB9022285680950EF002902570B78' : "0xC0c95eab51b85892e0cF563700BFbe54A1eA4Ae6")
-    var market = new web3.eth.Contract(Market.abi, false ? '0x0813ad9C2514A81bC9e1188BC1341c63a6Ab478f' : "0xb191783B5adD9C44aA6B583e5A68252d27244b34")
+    var code = new web3.eth.Contract(Code.abi, crypto == 0 ? Code.networks[5777].address : "0x4fDfd855E5B26035F9d3aC5ED2751A51d990f0f4")
+    var market = new web3.eth.Contract(Market.abi, crypto == 0 ? Market.networks[5777].address : "0xE401B8186dFa32C0b04ec33d3c2350a665c86f64")
     let accounts = await window.web3.eth.getAccounts()
     console.log(accounts)
     setLoading(true)
     setMsg("Create IPFS...")
-    // const metadata = await client.store({
-    //   name: title,
-    //   description: description,
-    //   image: new File([thumbnail], thumbnail.name, { type: "image/jpg" }),
-    //   properties: {
-    //     code: new File([file], file.name, { type: "application/zip" }),
-    //   },
-    // });
+    const metadata = await client.store({
+      name: title,
+      description: description,
+      image: new File([thumbnail], thumbnail.name, { type: "image/jpg" }),
+      properties: {
+        code: new File([file], file.name, { type: "application/zip" }),
+      },
+    });
     setMsg("Created IPFS...")
     setTimeout(() => {
       setMsg("Minting the NFT...")
     }, 3000);
-    await code.methods.createToken(market.options.address, "metadata.url").send({from :accounts[0], gas: 3000000 })
+    await code.methods.createToken(market.options.address, metadata.url).send({ from: accounts[0], gas: 3000000 })
     setTimeout(() => {
       setMsg("Minted the NFT...")
     }, 3000);
@@ -74,7 +77,7 @@ const MintNFT = () => {
       setTimeout(() => {
         setMsg("Create Market Item ...")
       }, 3000);
-      await market.methods.createMarketItem(web3.utils.toHex(code.options.address), tokenId, web3.utils.toWei(`${price}`, "ether"),).send({from: "0x056b05d110E45f89839DEE1F23a52AFc2f58fD52", gas: 3000000 })
+      await market.methods.createMarketItem(web3.utils.toHex(code.options.address), tokenId, web3.utils.toWei(`${price}`, "ether"),).send({ from: "0x056b05d110E45f89839DEE1F23a52AFc2f58fD52", gas: 3000000 })
       setTimeout(() => {
         setMsg("Created Market Item ...")
       }, 3000);
@@ -217,7 +220,7 @@ const MintNFT = () => {
                     style={{
                       width: "40vw",
                       height: "6vh",
-                      padding: "0 0 0 4rem",
+                      padding: "0 0 0 5.2rem",
                       fontSize: "2.9vh",
                       borderColor: "#c9ced6",
                     }}
@@ -225,26 +228,62 @@ const MintNFT = () => {
                     value={price}
                     onChange={(e) => setPrice(e.currentTarget.value)}
                     required
+                    min={0}
                     placeHolder="100.00"
                     step=".00"
                     prefix={
-                      <Button
-                        pos="absolute"
-                        onClick={() => console.log("clicked")}
-                        w="3rem"
-                        top="0"
-                        left="0"
-                        style={{
-                          borderRadius: "6px",
-                          height: "6vh",
-                          backgroundColor: "#c9ced6",
-                          color: "black",
-                          fontSize: "2.9vh",
-                        }}
-                        rounded={{ r: "md" }}
-                      >
-                        $
-                      </Button>
+                      <Div>
+                        <select
+                          style={{
+                            position: "absolute",
+                            width: "5rem",
+                            borderRadius: "6px",
+                            height: "6vh",
+                            backgroundColor: "#c9ced6",
+                            color: "black",
+                            border: "none",
+                            fontSize: "2.2vh",
+                          }}
+                          rounded={{ r: "md" }}
+                          value={crypto}
+                          onChange={async (e) => {
+                            setCrypto(e.currentTarget.value);
+                            if (e.currentTarget.value == 0) {
+                              if (window.ethereum) {
+                                try {
+                                  await window.ethereum.enable();
+                                  await window.ethereum.request({
+                                    method: 'wallet_switchEthereumChain',
+                                    params: [{ chainId: web3.utils.toHex("1337") }],
+                                  });
+                                } catch (error) {
+                                  console.error(error);
+                                }
+                              }
+                            }
+                            else if (e.currentTarget.value == 1) {
+                              if (window.ethereum) {
+                                try {
+                                  await window.ethereum.enable();
+                                  await window.ethereum.request({
+                                    method: 'wallet_switchEthereumChain',
+                                    params: [{ chainId: web3.utils.toHex("80001") }],
+                                  });
+                                } catch (error) {
+                                  console.error(error);
+                                }
+                              }
+                            }
+                          }}
+                        >
+                          <option value={0}>
+                            ETH
+                          </option>
+                          <option value={1}>
+                            MATIC
+                          </option>
+                        </select>
+                      </Div>
                     }
                   />
                 </div>

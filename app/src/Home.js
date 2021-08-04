@@ -23,7 +23,7 @@ export default () => {
   //   nodeUrl: "https://rpc-mumbai.maticvigil.com/",
   //   chainId:"80001",
   // })
-  var web3 = new Web3('ws://127.0.0.1:7545')
+  // var web3 = new Web3('ws://127.0.0.1:7545')
   return (
     <StyletronProvider value={engine} debug={debug} debugAfterHydration>
       <StyleReset />
