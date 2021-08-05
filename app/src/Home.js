@@ -10,6 +10,7 @@ import DetailsPage from "./components/DetailsPage";
 import MintNFT from "./components/MintNFT";
 import MyNFTs from "./components/mynfts";
 import Web3 from "web3"
+import SideBar from "./components/SideBar";
 
 const debug =
   process.env.NODE_ENV === "production" ? void 0 : new DebugEngine();
@@ -34,7 +35,10 @@ export default () => {
         }
         <Row>
           {/* <Col size="2" bg="warning700"></Col> */}
-          <Col size="12">
+          <Col size="3">
+            <SideBar/>
+          </Col>
+          <Col size="9">
             <div style={{ height: "92vh", width: "100%" }}>
               <Switch>
                 <Route exact path="/">

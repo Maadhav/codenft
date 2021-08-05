@@ -19,6 +19,10 @@ const Marketplace = () => {
 
     useEffect(() => {
         getData()
+        window.ethereum.on('networkChanged', function (accounts) {
+            getData()
+          })
+          
     }, [])
 
 
