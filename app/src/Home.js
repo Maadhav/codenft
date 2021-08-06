@@ -35,13 +35,13 @@ export default () => {
         }
         <Row>
           {/* <Col size="2" bg="warning700"></Col> */}
-          <Col size="3">
           {
-          location.pathname.includes("mint") ? <></>:
+            (location.pathname.includes("mint") || location.pathname.includes("details")) ? <></>:
+          <Col size="3">
           <SideBar />
-        }
           </Col>
-          <Col size="9">
+        }
+          <Col size={(location.pathname.includes("mint") || location.pathname.includes("details")) ?"12" :"9"}>
             <div style={{ height: "92vh", width: "100%" }}>
               <Switch>
                 <Route exact path="/">
