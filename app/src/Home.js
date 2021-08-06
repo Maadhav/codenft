@@ -36,7 +36,10 @@ export default () => {
         <Row>
           {/* <Col size="2" bg="warning700"></Col> */}
           <Col size="3">
-            <SideBar/>
+          {
+          location.pathname.includes("mint") ? <></>:
+          <SideBar />
+        }
           </Col>
           <Col size="9">
             <div style={{ height: "92vh", width: "100%" }}>

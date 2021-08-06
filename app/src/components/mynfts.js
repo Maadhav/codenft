@@ -17,6 +17,9 @@ const MyNFTs = () => {
 
     useEffect(() => {
         getData()
+        window.ethereum.on('networkChanged', function (accounts) {
+            getData()
+        })
     }, [])
 
 
@@ -28,21 +31,21 @@ const MyNFTs = () => {
         let accounts = await web3.eth.getAccounts()
         var code = new web3.eth.Contract(Code.abi, id == 1337 ? Code.networks[5777].address : "0x4fDfd855E5B26035F9d3aC5ED2751A51d990f0f4")
         var market = new web3.eth.Contract(Market.abi, id == 1337 ? Market.networks[5777].address : "0xE401B8186dFa32C0b04ec33d3c2350a665c86f64")
-        data = await market.methods.fetchMyNFTs().call({from: accounts[0]})
+        data = await market.methods.fetchMyNFTs().call({ from: accounts[0] })
         console.log(data)
         var parsedData = []
         for (let index = 0; index < data.length; index++) {
 
-                const e = data[index];
+            const e = data[index];
 
-                var uri = (await code.methods.tokenURI(e.tokenId).call()).toString().split("ipfs://")[1].split("/metadata.json")[0]
-                var result = await axios.get(`https://${uri}.ipfs.dweb.link/metadata.json`);
-                parsedData.push({
-                    imageUrl: imageCidandImage(result.data.image),
-                    name: result.data.name,
-                    itemId: e.itemId,
-                    price: e.price,
-                })
+            var uri = (await code.methods.tokenURI(e.tokenId).call()).toString().split("ipfs://")[1].split("/metadata.json")[0]
+            var result = await axios.get(`https://${uri}.ipfs.dweb.link/metadata.json`);
+            parsedData.push({
+                imageUrl: imageCidandImage(result.data.image),
+                name: result.data.name,
+                itemId: e.itemId,
+                price: e.price,
+            })
         }
         setItems(val => [...val, ...parsedData])
         setLoading(false)
