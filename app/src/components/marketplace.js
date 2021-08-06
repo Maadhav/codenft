@@ -63,7 +63,7 @@ const Marketplace = () => {
         //             price: e.price,
         //         })
         // }
-        setItems(val => [...val, ...parsedData])
+        setItems(val =>  parsedData)
         setLoading(false)
     }
     return (

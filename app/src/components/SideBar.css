@@ -8,7 +8,7 @@
 .side-main-content-container {
   height: 71px;
   width: 100%;
-  background-color: #FAFCFF;
+  background-color: #fafcff;
   display: flex;
   align-items: center;
   padding: 0px 23px;
@@ -21,23 +21,28 @@
 }
 
 #chain-content {
-    height: 120px;
-    background-color: #FAFCFF;
-    width: 100%;
-    display: none;
+  height: 120px;
+  background-color: #fafcff;
+  width: 100%;
+  display: none;
 }
 
 .chain-container {
-    display: flex;
-    padding: 5px 0px;
-    align-items: center;
+  display: flex;
+  padding: 5px 0px;
+  align-items: center;
 }
 
-.chain-image{
-    height: 30px;
-    width: 30px;
-    padding: 0px;
-    border-radius: 50%;
-    margin-right: 7px;
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+.chain-image {
+  height: 30px;
+  width: 30px;
+  padding: 0px;
+  border-radius: 50%;
+  margin-right: 7px;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+}
+
+.chain-checkbox {
+  transform: scale(1.2);
+  margin-right: 10px;
 }

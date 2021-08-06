@@ -36,10 +36,7 @@ export const Navbar = () => {
     return (
         <div className="navbar">
             <div className="logo-container">
-                <div>
-                    <img src="https://cdn.logo.com/hotlink-ok/logo-social.png" alt="logo" height={50} width={50} />
-                </div>
-                <div style={{  fontWeight: "bold", fontSize: 24, verticalAlign: "middle" }}>CodeNFT</div>
+                <div style={{  fontSize: 29, verticalAlign: "middle",color: "white"}}>{`Code {NFT}`}</div>
             </div>
             <div className="search-container">
                 <Input

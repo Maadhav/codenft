@@ -14,8 +14,19 @@
 }
 
 
+@font-face{
+    font-family:"bryndan-write-book";
+    src:url("../fonts/Bryndan_Write.ttf") format("woff"),
+    url("../fonts/Bryndan_Write.ttf") format("opentype"),
+    url("../fonts/Bryndan_Write.ttf") format("truetype");
+}
+
 .logo-container {
+    height: 8vh;
+    background-color: #094EFF;
+    margin-right: 10px;
     flex: 0.12;
+    font-family: "bryndan-write-book";
     align-items: center;
     padding-left: 20px;
     display: flex;
