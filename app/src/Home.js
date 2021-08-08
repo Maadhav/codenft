@@ -37,11 +37,11 @@ export default () => {
           {/* <Col size="2" bg="warning700"></Col> */}
           {
             (location.pathname.includes("mint") || location.pathname.includes("details")) ? <></>:
-          <Col size="3">
+          <Col size="2">
           <SideBar />
           </Col>
         }
-          <Col size={(location.pathname.includes("mint") || location.pathname.includes("details")) ?"12" :"9"}>
+          <Col size={(location.pathname.includes("mint") || location.pathname.includes("details")) ?"12" :"10"}>
             <div style={{ height: "92vh", width: "100%" }}>
               <Switch>
                 <Route exact path="/">

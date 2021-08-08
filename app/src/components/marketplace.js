@@ -42,6 +42,7 @@ const Marketplace = () => {
 
                 var uri = (await code.methods.tokenURI(e.tokenId).call()).toString().split("ipfs://")[1].split("/metadata.json")[0]
                 var result = await axios.get(`https://${uri}.ipfs.dweb.link/metadata.json`);
+                console.log(result.data)
                 parsedData.push({
                     imageUrl: imageCidandImage(result.data.image),
                     name: result.data.name,
@@ -49,6 +50,8 @@ const Marketplace = () => {
                     price: e.price,
                 })
         }
+
+        console.log(parsedData)
         // var localData = await localMarket.methods.fetchMarketItems().call()
         // console.log(localData)
         // for (let index = 0; index < localData.length; index++) {

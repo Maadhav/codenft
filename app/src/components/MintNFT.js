@@ -54,7 +54,7 @@ const MintNFT = () => {
     let accounts = await window.web3.eth.getAccounts()
     console.log(accounts)
     setLoading(true)
-    setMsg("Create IPFS...")
+    setMsg("Creating IPFS...")
     const metadata = await client.store({
       name: title,
       description: description,
@@ -77,13 +77,13 @@ const MintNFT = () => {
       setTimeout(() => {
         setMsg("Create Market Item ...")
       }, 3000);
-      await market.methods.createMarketItem(web3.utils.toHex(code.options.address), tokenId, web3.utils.toWei(`${price}`, "ether"),).send({ from: "0x056b05d110E45f89839DEE1F23a52AFc2f58fD52", gas: 3000000 })
+      await market.methods.createMarketItem(web3.utils.toHex(code.options.address), tokenId, web3.utils.toWei(`${price}`, "ether"),).send({ from: accounts[0], gas: 3000000})
       setTimeout(() => {
         setMsg("Created Market Item ...")
       }, 3000);
       setLoading(false)
+      history.replace("")
     }, 5000);
-    history.replace("")
   };
   function onProgressChange(index) {
     setTime(true);
