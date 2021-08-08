@@ -11,7 +11,7 @@ import Portis from "@portis/web3";
 
 import Web3Modal from "web3modal";
 
-const portis = new Portis('dappId', myPrivateEthereumNode);
+// const portis = new Portis('dappId', myPrivateEthereumNode);
 const App = () => {
   const [web3, setWeb3] = useState(window.ethereum);
   const [loading, setLoading] = useState(true);

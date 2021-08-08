@@ -36,7 +36,7 @@ export const Navbar = () => {
     return (
         <div className="navbar">
             <div className="logo-container">
-                <div style={{  fontSize: 29, verticalAlign: "middle",color: "white"}}>{`Code {NFT}`}</div>
+                <div style={{  fontSize: 29, verticalAlign: "middle",color: "white"}}>{`Code {NFT} `}</div>
             </div>
             <div className="search-container">
                 <Input

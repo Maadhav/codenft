@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Col, Row, } from 'atomize';
 import { Navbar } from "./components/navbar";
 import { StyleReset } from "atomize";
@@ -11,6 +11,8 @@ import MintNFT from "./components/MintNFT";
 import MyNFTs from "./components/mynfts";
 import Web3 from "web3"
 import SideBar from "./components/SideBar";
+import { Web3Context } from "./Web3Context";
+import ConnectWallet from "./components/ConnectWallet";
 
 const debug =
   process.env.NODE_ENV === "production" ? void 0 : new DebugEngine();
@@ -20,11 +22,13 @@ const engine = new Styletron();
 
 export default () => {
   const location = useLocation()
+  const [web3,] = useContext(Web3Context)
   // var portis = new Portis('f92f78e0-f2e3-4e31-a99e-8d34d4a7087f',{
   //   nodeUrl: "https://rpc-mumbai.maticvigil.com/",
   //   chainId:"80001",
   // })
   // var web3 = new Web3('ws://127.0.0.1:7545')
+  web3.eth.getAccounts(console.log)
   return (
     <StyletronProvider value={engine} debug={debug} debugAfterHydration>
       <StyleReset />
@@ -64,6 +68,7 @@ export default () => {
           </Col>
         </Row>
       </div>
+      {/* <ConnectWallet isOpen={true}/> */}
     </StyletronProvider>
   );
 };
