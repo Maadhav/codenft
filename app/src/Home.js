@@ -10,6 +10,7 @@ import DetailsPage from "./components/DetailsPage";
 import MintNFT from "./components/MintNFT";
 import MyNFTs from "./components/mynfts";
 import Web3 from "web3"
+import SideBar from "./components/SideBar";
 
 const debug =
   process.env.NODE_ENV === "production" ? void 0 : new DebugEngine();
@@ -23,7 +24,7 @@ export default () => {
   //   nodeUrl: "https://rpc-mumbai.maticvigil.com/",
   //   chainId:"80001",
   // })
-  var web3 = new Web3('ws://127.0.0.1:7545')
+  // var web3 = new Web3('ws://127.0.0.1:7545')
   return (
     <StyletronProvider value={engine} debug={debug} debugAfterHydration>
       <StyleReset />
@@ -34,7 +35,13 @@ export default () => {
         }
         <Row>
           {/* <Col size="2" bg="warning700"></Col> */}
-          <Col size="12">
+          {
+            (location.pathname.includes("mint") || location.pathname.includes("details")) ? <></>:
+          <Col size="3">
+          <SideBar />
+          </Col>
+        }
+          <Col size={(location.pathname.includes("mint") || location.pathname.includes("details")) ?"12" :"9"}>
             <div style={{ height: "92vh", width: "100%" }}>
               <Switch>
                 <Route exact path="/">

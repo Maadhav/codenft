@@ -28,6 +28,7 @@ const App = () => {
     return true;
   }
 
+
   useEffect(() => {
     connectWallet();
   }, []);
