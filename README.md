@@ -2,7 +2,9 @@
 
 ## Setup
 1. Clone the CodeNFT project from GitHub:
-`git clone https://github.com/Maadhav/codenft.git`
+```
+git clone https://github.com/Maadhav/codenft.git
+```
 
 2. Now the Project structure looks like this: 
 
@@ -15,7 +17,7 @@
 	│       ├── fonts
 	│       └── utils
 	├── contracts
-		└── CodeNFT.sol
+	|	└── CodeNFT.sol
 	├── migrations
 	└── test
 	```
