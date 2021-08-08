@@ -23,7 +23,7 @@ git clone https://github.com/Maadhav/codenft.git
 	```
 	The `app` folder has the source for the frontend React web app. 
 	The `contracts` folder contains the code for our solidity smart contract.
-3. To run the project, you first need to have ganache running at port `:7574`	or you can change the settings in `truffle-config.js`
+3. To run the project, you first need to have ganache running at port `:7545`	or you can change the settings in `truffle-config.js`
 4. Now in your terminal run the following commands:
 	`truffle compile`
 	Now for the deploying it on the local ethereum network run: 
